@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Navigation, Loader2, Star } from "lucide-react";
 
 declare global {
-  interface Window { google: typeof google; initGmaps?: () => void; }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  interface Window { google: any; initGmaps?: () => void; }
 }
 
 type Store = {
