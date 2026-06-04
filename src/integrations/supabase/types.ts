@@ -14,7 +14,297 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ai_analysis: {
+        Row: {
+          blush_category: string | null
+          blush_color: string | null
+          blush_confidence: number | null
+          created_at: string
+          eyeshadow_category: string | null
+          eyeshadow_color: string | null
+          eyeshadow_confidence: number | null
+          foundation_category: string | null
+          foundation_confidence: number | null
+          foundation_finish: string | null
+          id: string
+          lip_category: string | null
+          lip_color: string | null
+          lip_confidence: number | null
+          look_id: string
+          raw_json: Json | null
+          skin_tone: string | null
+          skin_tone_confidence: number | null
+          style_tags: string[] | null
+          undertone: string | null
+          undertone_confidence: number | null
+        }
+        Insert: {
+          blush_category?: string | null
+          blush_color?: string | null
+          blush_confidence?: number | null
+          created_at?: string
+          eyeshadow_category?: string | null
+          eyeshadow_color?: string | null
+          eyeshadow_confidence?: number | null
+          foundation_category?: string | null
+          foundation_confidence?: number | null
+          foundation_finish?: string | null
+          id?: string
+          lip_category?: string | null
+          lip_color?: string | null
+          lip_confidence?: number | null
+          look_id: string
+          raw_json?: Json | null
+          skin_tone?: string | null
+          skin_tone_confidence?: number | null
+          style_tags?: string[] | null
+          undertone?: string | null
+          undertone_confidence?: number | null
+        }
+        Update: {
+          blush_category?: string | null
+          blush_color?: string | null
+          blush_confidence?: number | null
+          created_at?: string
+          eyeshadow_category?: string | null
+          eyeshadow_color?: string | null
+          eyeshadow_confidence?: number | null
+          foundation_category?: string | null
+          foundation_confidence?: number | null
+          foundation_finish?: string | null
+          id?: string
+          lip_category?: string | null
+          lip_color?: string | null
+          lip_confidence?: number | null
+          look_id?: string
+          raw_json?: Json | null
+          skin_tone?: string | null
+          skin_tone_confidence?: number | null
+          style_tags?: string[] | null
+          undertone?: string | null
+          undertone_confidence?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_analysis_look_id_fkey"
+            columns: ["look_id"]
+            isOneToOne: true
+            referencedRelation: "looks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      likes: {
+        Row: {
+          created_at: string
+          look_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          look_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          look_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "likes_look_id_fkey"
+            columns: ["look_id"]
+            isOneToOne: false
+            referencedRelation: "looks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      look_products: {
+        Row: {
+          look_id: string
+          match_confidence: number | null
+          product_id: string
+          reason: string | null
+        }
+        Insert: {
+          look_id: string
+          match_confidence?: number | null
+          product_id: string
+          reason?: string | null
+        }
+        Update: {
+          look_id?: string
+          match_confidence?: number | null
+          product_id?: string
+          reason?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "look_products_look_id_fkey"
+            columns: ["look_id"]
+            isOneToOne: false
+            referencedRelation: "looks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "look_products_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      looks: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string
+          is_public: boolean
+          slug: string
+          storage_path: string | null
+          title: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url: string
+          is_public?: boolean
+          slug: string
+          storage_path?: string | null
+          title?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string
+          is_public?: boolean
+          slug?: string
+          storage_path?: string | null
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          brand: string
+          category: string
+          created_at: string
+          description: string | null
+          finish: string | null
+          id: string
+          image_url: string | null
+          name: string
+          price_inr: number
+          retailer_name: string
+          retailer_url: string
+          shade: string | null
+          shade_family: string | null
+          subcategory: string | null
+          undertone: string | null
+        }
+        Insert: {
+          brand: string
+          category: string
+          created_at?: string
+          description?: string | null
+          finish?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          price_inr: number
+          retailer_name: string
+          retailer_url: string
+          shade?: string | null
+          shade_family?: string | null
+          subcategory?: string | null
+          undertone?: string | null
+        }
+        Update: {
+          brand?: string
+          category?: string
+          created_at?: string
+          description?: string | null
+          finish?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          price_inr?: number
+          retailer_name?: string
+          retailer_url?: string
+          shade?: string | null
+          shade_family?: string | null
+          subcategory?: string | null
+          undertone?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id: string
+          updated_at?: string
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
+      saves: {
+        Row: {
+          created_at: string
+          look_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          look_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          look_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saves_look_id_fkey"
+            columns: ["look_id"]
+            isOneToOne: false
+            referencedRelation: "looks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
