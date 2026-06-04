@@ -78,16 +78,16 @@ export function StoreFinder() {
           const svc = new window.google.maps.places.PlacesService(map);
           svc.nearbySearch(
             { location: p, radius, keyword: "beauty store cosmetics makeup", type: "store" },
-            (results, statusCode) => {
+            (results: any, statusCode: any) => {
               if (statusCode !== window.google.maps.places.PlacesServiceStatus.OK || !results) {
                 setStatus("error"); setError("No beauty stores found in this radius. Try a wider radius."); return;
               }
-              const withDist = results.map((r) => ({
-                ...(r as unknown as Store),
-                distance: distanceKm(p, { lat: r.geometry!.location!.lat(), lng: r.geometry!.location!.lng() }),
-              })).sort((a, b) => (a.distance || 0) - (b.distance || 0));
+              const withDist = (results as Store[]).map((r) => ({
+                ...r,
+                distance: distanceKm(p, { lat: r.geometry.location.lat(), lng: r.geometry.location.lng() }),
+              })).sort((a: Store, b: Store) => (a.distance || 0) - (b.distance || 0));
               setStores(withDist);
-              withDist.slice(0, 20).forEach((s) => {
+              withDist.slice(0, 20).forEach((s: Store) => {
                 new window.google.maps.Marker({
                   position: { lat: s.geometry.location.lat(), lng: s.geometry.location.lng() },
                   map, title: s.name,
