@@ -94,6 +94,42 @@ export type Database = {
           },
         ]
       }
+      creators: {
+        Row: {
+          affiliate_code: string | null
+          created_at: string
+          email: string
+          id: string
+          instagram_handle: string | null
+          name: string
+          subscription_status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          affiliate_code?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          instagram_handle?: string | null
+          name: string
+          subscription_status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          affiliate_code?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          instagram_handle?: string | null
+          name?: string
+          subscription_status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       likes: {
         Row: {
           created_at: string
@@ -205,6 +241,7 @@ export type Database = {
       }
       products: {
         Row: {
+          affiliate_url: string | null
           brand: string
           category: string
           created_at: string
@@ -222,6 +259,7 @@ export type Database = {
           undertone: string | null
         }
         Insert: {
+          affiliate_url?: string | null
           brand: string
           category: string
           created_at?: string
@@ -239,6 +277,7 @@ export type Database = {
           undertone?: string | null
         }
         Update: {
+          affiliate_url?: string | null
           brand?: string
           category?: string
           created_at?: string
@@ -313,15 +352,129 @@ export type Database = {
           },
         ]
       }
+      store_inventory: {
+        Row: {
+          id: string
+          product_id: string
+          stock_quantity: number
+          store_id: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          product_id: string
+          stock_quantity?: number
+          store_id: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          product_id?: string
+          stock_quantity?: number
+          store_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "store_inventory_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "store_inventory_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stores: {
+        Row: {
+          address: string | null
+          city: string | null
+          created_at: string
+          email: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          owner_name: string | null
+          phone: string | null
+          store_name: string
+          subscription_status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          owner_name?: string | null
+          phone?: string | null
+          store_name: string
+          subscription_status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          owner_name?: string | null
+          phone?: string | null
+          store_name?: string
+          subscription_status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -448,6 +601,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+    },
   },
 } as const
