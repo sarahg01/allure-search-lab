@@ -25,6 +25,7 @@ export function Navbar() {
             <Link to="/" className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Discover</Link>
             <Link to="/feed" className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Trending</Link>
             <Link to="/explore" className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Explore</Link>
+            <Link to="/admin" className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Admin</Link>
           </nav>
 
           <div className="flex items-center gap-2">

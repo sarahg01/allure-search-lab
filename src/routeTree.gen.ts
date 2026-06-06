@@ -16,6 +16,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LookSlugRouteImport } from './routes/look.$slug'
 import { Route as AuthenticatedUploadRouteImport } from './routes/_authenticated/upload'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 
 const FeedRoute = FeedRouteImport.update({
   id: '/feed',
@@ -51,12 +52,18 @@ const AuthenticatedUploadRoute = AuthenticatedUploadRouteImport.update({
   path: '/upload',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
   '/feed': typeof FeedRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/upload': typeof AuthenticatedUploadRoute
   '/look/$slug': typeof LookSlugRoute
 }
@@ -65,6 +72,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
   '/feed': typeof FeedRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/upload': typeof AuthenticatedUploadRoute
   '/look/$slug': typeof LookSlugRoute
 }
@@ -75,14 +83,29 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
   '/feed': typeof FeedRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/upload': typeof AuthenticatedUploadRoute
   '/look/$slug': typeof LookSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/explore' | '/feed' | '/upload' | '/look/$slug'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/explore'
+    | '/feed'
+    | '/admin'
+    | '/upload'
+    | '/look/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/explore' | '/feed' | '/upload' | '/look/$slug'
+  to:
+    | '/'
+    | '/auth'
+    | '/explore'
+    | '/feed'
+    | '/admin'
+    | '/upload'
+    | '/look/$slug'
   id:
     | '__root__'
     | '/'
@@ -90,6 +113,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/explore'
     | '/feed'
+    | '/_authenticated/admin'
     | '/_authenticated/upload'
     | '/look/$slug'
   fileRoutesById: FileRoutesById
@@ -154,14 +178,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUploadRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedUploadRoute: typeof AuthenticatedUploadRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedUploadRoute: AuthenticatedUploadRoute,
 }
 
@@ -179,13 +212,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
